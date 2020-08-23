@@ -35,8 +35,18 @@ for i, p in result.items():
     # plt.plot(int(date), dataForAllTimes_row[3])
 
 df = df.sort_values('date')
-print(df['open'])
-fig = px.scatter(df['open'], size_max=100)
+timeNow = datetime.datetime.now()
+newTime = []
+print("The current time is {}".format(timeNow))
+for time in df['date']:
+    correctedTime = timeNow - time
+    print('This is the current time: {}'.format(
+        timeNow) + " ---- Date from API: {}".format(time))
+    newTime.append(correctedTime)
+
+
+# print(df['open'], df['date'])
+fig = px.line(df['open'], title="{} Open pricing over time.".format(stock))
 
 app.layout = html.Div([
     dcc.Dropdown(
@@ -50,7 +60,7 @@ app.layout = html.Div([
     html.Div(id='dd-output-container'),
 
     dcc.Graph(
-        id='dd-output-container',
+        id='graph',
         figure=fig
     )
 ])
